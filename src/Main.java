@@ -7,8 +7,8 @@ public class Main extends JFrame {
         setSize(700, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
 
-        currentScene = new TitleScene(this);
-        setContentPane(currentScene);
+        currentScene = new InGameScene(this, 0);
+        this.setContentPane(currentScene);
 
         setVisible(true);
     }
