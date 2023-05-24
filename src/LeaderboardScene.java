@@ -1,14 +1,23 @@
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+import requstor.Requestor;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.net.ConnectException;
+import java.util.Arrays;
 
 class LeaderboardFrame extends JFrame {
     private LeaderboardScene leaderboardScene;
+    private Requestor requestor = new Requestor("http://3.34.97.153:3000");
 
     public LeaderboardFrame() {
-        this.leaderboardScene=new LeaderboardScene(this);
+        this.leaderboardScene = new LeaderboardScene(this, requestor);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
@@ -35,9 +44,13 @@ class LeaderboardScene extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
 
+    private Requestor requestor; // 서버 요청 객체
+
     private JLabel difficultyLabel; // 난이도 표시 레이블
 
-    public LeaderboardScene(LeaderboardFrame frame) {
+    public LeaderboardScene(LeaderboardFrame frame, Requestor requestor) {
+        this.requestor = requestor;
+
         setLayout(new BorderLayout());
 
         currentDifficultyIndex = 0;
@@ -105,27 +118,50 @@ class LeaderboardScene extends JPanel {
     }
 
     private Object[][] getExampleRankingForDifficulty(String difficulty) {
-        if (difficulty.equals("easy")) {
+        JSONParser jsonParser = new JSONParser();
+        String rankString = requestor.get(difficulty);
+        try {
+            JSONArray jsonArray = (JSONArray) jsonParser.parse(rankString);
+            Object[][] rankArray = new Object[jsonArray.size()][];
+
+            for (int i = 0; i < jsonArray.size(); i++) {
+                var player = (JSONObject) jsonArray.get(i);
+                rankArray[i] = new Object[]{i+1, player.get("name"), player.get("sec")};
+            }
+
+            System.out.println(Arrays.deepToString(rankArray));
+
+            return rankArray;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+//        if (difficulty.equals("easy")) {
+//            return new Object[][]{
+//                    {1, "Player1", 120},
+//                    {2, "Player2", 150},
+//                    {3, "Player3", 180}
+//            };
+//        } else if (difficulty.equals("normal")) {
+//            return new Object[][]{
+//                    {1, "Player4", 200},
+//                    {2, "Player5", 220},
+//                    {3, "Player6", 240}
+//            };
+//        } else if (difficulty.equals("hard")) {
+//            return new Object[][]{
+//                    {1, "Player7", 300},
+//                    {2, "Player8", 320},
+//                    {3, "Player9", 350}
+//            };
+//        }
+            // 오류 발생시 임시값 리턴
             return new Object[][]{
                     {1, "Player1", 120},
                     {2, "Player2", 150},
                     {3, "Player3", 180}
             };
-        } else if (difficulty.equals("normal")) {
-            return new Object[][]{
-                    {1, "Player4", 200},
-                    {2, "Player5", 220},
-                    {3, "Player6", 240}
-            };
-        } else if (difficulty.equals("hard")) {
-            return new Object[][]{
-                    {1, "Player7", 300},
-                    {2, "Player8", 320},
-                    {3, "Player9", 350}
-            };
-        }
-
-        return new Object[][]{};
     }
 
     private void showExampleRankingForDifficulty(String difficulty) {

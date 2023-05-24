@@ -28,7 +28,7 @@ public class Requestor {
     }
     public String get() {
         String urlString=urlBuilder.get();
-        return toString();
+        return request(urlString);
     }
 
     public String get(String diff) {
