@@ -2,6 +2,8 @@ import javax.swing.*;
 
 public class Main extends JFrame {
     private JPanel currentScene;
+    private LeaderboardScene leaderboardScene;
+    private JFrame leaderboardFrame;
 
     public Main() {
         setSize(700, 700);
@@ -11,6 +13,21 @@ public class Main extends JFrame {
         this.setContentPane(currentScene);
 
         setVisible(true);
+
+        leaderboardScene = new LeaderboardScene(this);
+        showLeaderboard();
+    }
+
+    public void showLeaderboard() {
+        leaderboardFrame = new JFrame("Leaderboard");
+        leaderboardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        leaderboardFrame.setSize(500, 400);
+        leaderboardFrame.setLocationRelativeTo(null);
+        leaderboardFrame.setContentPane(leaderboardScene);
+        leaderboardFrame.setVisible(true);
+    }
+    public void closeLeaderboard() {
+        leaderboardFrame.dispose();
     }
 
     public void updateScene() {
