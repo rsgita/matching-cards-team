@@ -17,7 +17,6 @@ class LeaderboardFrame extends JFrame {
     private Requestor requestor = new Requestor("http://3.34.97.153:3000");
 
     public LeaderboardFrame() {
-        this.leaderboardScene = new LeaderboardScene(this, requestor);
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
@@ -27,6 +26,7 @@ class LeaderboardFrame extends JFrame {
     // 강조 표시 없으면 강조표시 없는 패널
     // 두개로 분리하여 생성
     public void showLeaderboard() {
+        this.leaderboardScene = new LeaderboardScene(this, requestor);
         setContentPane(leaderboardScene);
         setVisible(true);
     }

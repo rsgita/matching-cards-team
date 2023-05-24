@@ -12,8 +12,8 @@ public class InGameScene extends JPanel {
     public static final int NORMAL = 1;
     public static final int HARD = 2;
 
-    private static final int ROWS[] = {4, 4, 6};
-    private static final int COLUMNS[] = {4, 6, 6};
+    private static final int ROWS[] = {4, 4, 4};
+    private static final int COLUMNS[] = {4, 5, 6};
 
     private static final int TOTAL_IMAGES = 18;
     private static final int IMAGES_PER_PAIR = 2;
@@ -27,7 +27,13 @@ public class InGameScene extends JPanel {
     private boolean isChecking;
     private long startTime;
 
+    private Main main;
+    private int difficulty;
+
     public InGameScene(Main main, int difficulty) {
+        this.main=main;
+        this.difficulty=difficulty;
+
         this.row = this.ROWS[difficulty];
         this.column = this.COLUMNS[difficulty];
         this.totalPairs = (this.row * this.column) / 2;
@@ -184,8 +190,10 @@ public class InGameScene extends JPanel {
                     if (totalMatches == totalPairs) {
                         // 모든 짝을 다 맞춤
                         JOptionPane.showMessageDialog(null, "축하합니다!");
-                        SwingUtilities.getWindowAncestor(InGameScene.this).dispose();
-                        System.exit(0);
+//                        SwingUtilities.getWindowAncestor(InGameScene.this).dispose();
+//                        System.exit(0);
+                        // 게임오버 패널로 변경
+                        InGameScene.this.main.setGameOverScene(InGameScene.this.difficulty, 30);
                     }
 
                     selectedCard = null;
