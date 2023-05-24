@@ -2,32 +2,24 @@ import javax.swing.*;
 
 public class Main extends JFrame {
     private JPanel currentScene;
-    private LeaderboardScene leaderboardScene;
-    private JFrame leaderboardFrame;
+    private LeaderboardFrame leaderboardFrame;
 
     public Main() {
         setSize(700, 700);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
-
+    
+        // 순위 프레임
+        leaderboardFrame =new LeaderboardFrame();
+        
+        // 현재 패널 결정
         currentScene = new TitleScene(this);
         this.setContentPane(currentScene);
 
         setVisible(true);
-
-        leaderboardScene = new LeaderboardScene(this);
-        showLeaderboard();
     }
 
     public void showLeaderboard() {
-        leaderboardFrame = new JFrame("Leaderboard");
-        leaderboardFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        leaderboardFrame.setSize(500, 400);
-        leaderboardFrame.setLocationRelativeTo(null);
-        leaderboardFrame.setContentPane(leaderboardScene);
-        leaderboardFrame.setVisible(true);
-    }
-    public void closeLeaderboard() {
-        leaderboardFrame.dispose();
+        leaderboardFrame.showLeaderboard();
     }
 
     public void updateScene() {

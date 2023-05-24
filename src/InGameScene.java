@@ -8,12 +8,12 @@ import java.util.List;
 import java.util.Random;
 
 public class InGameScene extends JPanel {
-    public static final int EASY=0;
-    public static final int NORMAL=1;
-    public static final int HARD=2;
+    public static final int EASY = 0;
+    public static final int NORMAL = 1;
+    public static final int HARD = 2;
 
-    private static final int ROWS[]={4,4,6};
-    private static final int COLUMNS[]={4,6,6};
+    private static final int ROWS[] = {4, 4, 6};
+    private static final int COLUMNS[] = {4, 6, 6};
 
     private static final int TOTAL_IMAGES = 18;
     private static final int IMAGES_PER_PAIR = 2;
@@ -22,15 +22,15 @@ public class InGameScene extends JPanel {
     private int column;
     private int totalPairs;
 
-    private static int totalMatches;
-    private static CardButton selectedCard;
-    private static boolean isChecking;
-    private static long startTime;
+    private int totalMatches;
+    private CardButton selectedCard;
+    private boolean isChecking;
+    private long startTime;
 
     public InGameScene(Main main, int difficulty) {
-        this.row=this.ROWS[difficulty];
-        this.column=this.COLUMNS[difficulty];
-        this.totalPairs=(this.row * this.column) / 2;
+        this.row = this.ROWS[difficulty];
+        this.column = this.COLUMNS[difficulty];
+        this.totalPairs = (this.row * this.column) / 2;
 
 
         List<Integer> selectedImages = selectRandomImages();

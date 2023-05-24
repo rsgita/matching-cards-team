@@ -4,6 +4,29 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+class LeaderboardFrame extends JFrame {
+    private LeaderboardScene leaderboardScene;
+
+    public LeaderboardFrame() {
+        this.leaderboardScene=new LeaderboardScene(this);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+        setSize(500, 400);
+        setLocationRelativeTo(null);
+    }
+
+    // 강조 표시가 있으면 강조표시 존재하는 패널
+    // 강조 표시 없으면 강조표시 없는 패널
+    // 두개로 분리하여 생성
+    public void showLeaderboard() {
+        setContentPane(leaderboardScene);
+        setVisible(true);
+    }
+
+    public void closeLeaderboard() {
+        dispose();
+    }
+}
+
 class LeaderboardScene extends JPanel {
     private String currentDifficulty;
     private int currentDifficultyIndex;
@@ -14,7 +37,7 @@ class LeaderboardScene extends JPanel {
 
     private JLabel difficultyLabel; // 난이도 표시 레이블
 
-    public LeaderboardScene(Main main) {
+    public LeaderboardScene(LeaderboardFrame frame) {
         setLayout(new BorderLayout());
 
         currentDifficultyIndex = 0;
@@ -63,7 +86,7 @@ class LeaderboardScene extends JPanel {
         closeButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                main.closeLeaderboard();
+                frame.closeLeaderboard();
             }
         });
         add(closeButton, BorderLayout.SOUTH);
