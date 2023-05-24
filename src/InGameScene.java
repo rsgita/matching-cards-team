@@ -8,12 +8,19 @@ import java.util.List;
 import java.util.Random;
 
 public class InGameScene extends JPanel {
-    private static final int ROW = 4;
-    private static final int COLUMN = 6;
-    private static final int TOTAL_PAIRS = (ROW * COLUMN) / 2;
+    public static final int EASY=0;
+    public static final int NORMAL=1;
+    public static final int HARD=2;
+
+    private static final int ROWS[]={4,4,6};
+    private static final int COLUMNS[]={4,6,6};
 
     private static final int TOTAL_IMAGES = 18;
     private static final int IMAGES_PER_PAIR = 2;
+
+    private int row;
+    private int column;
+    private int totalPairs;
 
     private static int totalMatches;
     private static CardButton selectedCard;
@@ -21,6 +28,11 @@ public class InGameScene extends JPanel {
     private static long startTime;
 
     public InGameScene(Main main, int difficulty) {
+        this.row=this.ROWS[difficulty];
+        this.column=this.COLUMNS[difficulty];
+        this.totalPairs=(this.row * this.column) / 2;
+
+
         List<Integer> selectedImages = selectRandomImages();
 
         List<Integer> allCards = createCardPairs(selectedImages);
@@ -32,7 +44,7 @@ public class InGameScene extends JPanel {
 
         // 카드 패널 생성
         JPanel cardPanel = new JPanel();
-        cardPanel.setLayout(new GridLayout(ROW, COLUMN, 10, 10));
+        cardPanel.setLayout(new GridLayout(row, column, 10, 10));
 
         // 각 카드 버튼에 액션 리스너 추가
         for (CardButton[] row : cards) {
@@ -85,7 +97,7 @@ public class InGameScene extends JPanel {
 
         List<Integer> selectedImages = new ArrayList<>();
         Random random = new Random();
-        for (int i = 0; i < TOTAL_PAIRS; i++) {
+        for (int i = 0; i < totalPairs; i++) {
             int randomIndex = random.nextInt(allImages.size());
             int image = allImages.remove(randomIndex);
             selectedImages.add(image);
@@ -111,10 +123,10 @@ public class InGameScene extends JPanel {
 
         Collections.shuffle(cardButtons);
 
-        CardButton[][] cards = new CardButton[ROW][COLUMN];
+        CardButton[][] cards = new CardButton[row][column];
         int index = 0;
-        for (int i = 0; i < ROW; i++) {
-            for (int j = 0; j < COLUMN; j++) {
+        for (int i = 0; i < row; i++) {
+            for (int j = 0; j < column; j++) {
                 cards[i][j] = cardButtons.get(index);
                 index++;
             }
@@ -169,7 +181,7 @@ public class InGameScene extends JPanel {
                     clickedCard.setMatched(true);
                     totalMatches++;
 
-                    if (totalMatches == TOTAL_PAIRS) {
+                    if (totalMatches == totalPairs) {
                         // 모든 짝을 다 맞춤
                         JOptionPane.showMessageDialog(null, "축하합니다!");
                         SwingUtilities.getWindowAncestor(InGameScene.this).dispose();
