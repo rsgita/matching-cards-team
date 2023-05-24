@@ -36,7 +36,7 @@ class TitleScene extends JPanel {
         btn_E.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                main.setInGameScene(Board.EASY);
+                main.setInGameScene(0);
             }
         });
 
@@ -45,7 +45,7 @@ class TitleScene extends JPanel {
         btn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                main.setInGameScene(Board.NORMAL);
+                main.setInGameScene(0);
             }
         });
 
@@ -54,7 +54,7 @@ class TitleScene extends JPanel {
         btn_H.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                main.setInGameScene(Board.HARD);
+                main.setInGameScene(0);
             }
         });
 
