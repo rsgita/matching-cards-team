@@ -13,10 +13,11 @@ import java.net.ConnectException;
 import java.util.Arrays;
 
 class LeaderboardFrame extends JFrame {
+    private Leaderboard leaderboard;
     private LeaderboardScene leaderboardScene;
-    private Requestor requestor = new Requestor("http://3.34.97.153:3000");
 
-    public LeaderboardFrame() {
+    public LeaderboardFrame(Leaderboard leaderboard) {
+        this.leaderboard = leaderboard;
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         setSize(500, 400);
         setLocationRelativeTo(null);
@@ -26,7 +27,7 @@ class LeaderboardFrame extends JFrame {
     // 강조 표시 없으면 강조표시 없는 패널
     // 두개로 분리하여 생성
     public void showLeaderboard() {
-        this.leaderboardScene = new LeaderboardScene(this, requestor);
+        this.leaderboardScene = new LeaderboardScene(this, this.leaderboard);
         setContentPane(leaderboardScene);
         setVisible(true);
     }
@@ -34,6 +35,8 @@ class LeaderboardFrame extends JFrame {
     public void closeLeaderboard() {
         dispose();
     }
+
+
 }
 
 class LeaderboardScene extends JPanel {
@@ -44,12 +47,14 @@ class LeaderboardScene extends JPanel {
     private JTable table;
     private DefaultTableModel tableModel;
 
-    private Requestor requestor; // 서버 요청 객체
-
     private JLabel difficultyLabel; // 난이도 표시 레이블
 
-    public LeaderboardScene(LeaderboardFrame frame, Requestor requestor) {
-        this.requestor = requestor;
+    private LeaderboardFrame frame;
+    private Leaderboard leaderboard;
+
+    public LeaderboardScene(LeaderboardFrame frame, Leaderboard leaderboard) {
+        this.frame = frame;
+        this.leaderboard = leaderboard;
 
         setLayout(new BorderLayout());
 
@@ -118,15 +123,27 @@ class LeaderboardScene extends JPanel {
     }
 
     private Object[][] getExampleRankingForDifficulty(String difficulty) {
+        Leaderboard leaderboard = LeaderboardScene.this.leaderboard;
+
         JSONParser jsonParser = new JSONParser();
-        String rankString = requestor.get(difficulty);
+        String rankString = leaderboard.get(difficulty);
+
+        // 오류 발생시 임시값 리턴
+        if (rankString == null) {
+            return new Object[][]{
+                    {1, "Player1", 120},
+                    {2, "Player2", 150},
+                    {3, "Player3", 180}
+            };
+        }
+
         try {
             JSONArray jsonArray = (JSONArray) jsonParser.parse(rankString);
             Object[][] rankArray = new Object[jsonArray.size()][];
 
             for (int i = 0; i < jsonArray.size(); i++) {
                 var player = (JSONObject) jsonArray.get(i);
-                rankArray[i] = new Object[]{i+1, player.get("name"), player.get("sec")};
+                rankArray[i] = new Object[]{i + 1, player.get("name"), player.get("sec")};
             }
 
             System.out.println(Arrays.deepToString(rankArray));
@@ -137,31 +154,12 @@ class LeaderboardScene extends JPanel {
             e.printStackTrace();
         }
 
-//        if (difficulty.equals("easy")) {
-//            return new Object[][]{
-//                    {1, "Player1", 120},
-//                    {2, "Player2", 150},
-//                    {3, "Player3", 180}
-//            };
-//        } else if (difficulty.equals("normal")) {
-//            return new Object[][]{
-//                    {1, "Player4", 200},
-//                    {2, "Player5", 220},
-//                    {3, "Player6", 240}
-//            };
-//        } else if (difficulty.equals("hard")) {
-//            return new Object[][]{
-//                    {1, "Player7", 300},
-//                    {2, "Player8", 320},
-//                    {3, "Player9", 350}
-//            };
-//        }
-            // 오류 발생시 임시값 리턴
-            return new Object[][]{
-                    {1, "Player1", 120},
-                    {2, "Player2", 150},
-                    {3, "Player3", 180}
-            };
+
+        return new Object[][]{
+                {1, "Player1", 120},
+                {2, "Player2", 150},
+                {3, "Player3", 180}
+        };
     }
 
     private void showExampleRankingForDifficulty(String difficulty) {

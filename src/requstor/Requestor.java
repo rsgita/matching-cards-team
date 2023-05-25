@@ -19,15 +19,13 @@ public class Requestor {
         urlBuilder = new UrlBuilder(domain);
     }
 
-    public boolean register(String diff, String name, int sec) {
-
+    public String register(String diff, String name, int sec) {
         String urlString = urlBuilder.register(diff, name, sec);
-        String response = request(urlString);
-
-        return Boolean.parseBoolean(response);
+        return request(urlString);
     }
+
     public String get() {
-        String urlString=urlBuilder.get();
+        String urlString = urlBuilder.get();
         return request(urlString);
     }
 
@@ -39,6 +37,24 @@ public class Requestor {
     public String reset() {
         String urlString = urlBuilder.reset();
         return request(urlString);
+    }
+
+    public boolean getStatus() {
+        String urlString = urlBuilder.getBaseUrl();
+        try {
+            URL url = new URL(urlString);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+
+            int responseCode = conn.getResponseCode();
+
+            System.out.println("responseCode: "+responseCode);
+            return true;
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     private String request(String urlString) {
@@ -71,7 +87,7 @@ public class Requestor {
 
 
         String hardResponse = requestor.get("hard"); // hard난이도 기록 전부 불러오기, "false"면 실패한 것(접근금지)
-        Boolean boolResponse = requestor.register("hard", "jinseok", 30);// ("jinseok",30) 을 hard에 저장
+//        Boolean boolResponse = requestor.register("hard", "jinseok", 30);// ("jinseok",30) 을 hard에 저장
         String resetResponse = requestor.reset(); // 모든 기록 초기화 (굳이 쓸필요 없음)
 
 

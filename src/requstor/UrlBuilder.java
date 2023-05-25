@@ -32,6 +32,11 @@ class UrlBuilder {
         return toString();
     }
 
+    public String getBaseUrl() {
+        this.endpoint="";
+        return toString();
+    }
+
     private String urlEncode(String value) {
         try {
             return URLEncoder.encode(value, "UTF-8");
