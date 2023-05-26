@@ -26,9 +26,14 @@ public class InGameScene extends JPanel {
     private CardButton selectedCard;
     private boolean isChecking;
     private long startTime;
+    private long endTime;
+
 
     private Main main;
     private int difficulty;
+
+    private Timer gameTimer;
+
 
     public InGameScene(Main main, int difficulty) {
         this.main=main;
@@ -142,7 +147,7 @@ public class InGameScene extends JPanel {
     }
 
     private void startTimer(JLabel timerLabel) {
-        Timer timer = new Timer(1000, new ActionListener() {
+        gameTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 long elapsedTime = System.currentTimeMillis() - startTime;
@@ -151,8 +156,19 @@ public class InGameScene extends JPanel {
                 timerLabel.setText(time);
             }
         });
-        timer.start();
+        gameTimer.start();
     }
+
+
+    private long stopTimer() {
+        if (gameTimer != null && gameTimer.isRunning()) {
+            gameTimer.stop();
+        }
+        endTime = System.currentTimeMillis();
+        return endTime;
+    }
+
+
 
     private class CardButtonListener implements ActionListener {
         @Override
@@ -189,6 +205,7 @@ public class InGameScene extends JPanel {
 
                     if (totalMatches == totalPairs) {
                         // 모든 짝을 다 맞춤
+                        stopTimer();
                         JOptionPane.showMessageDialog(null, "축하합니다!");
 //                        SwingUtilities.getWindowAncestor(InGameScene.this).dispose();
 //                        System.exit(0);
@@ -274,5 +291,4 @@ class CardButton extends JButton {
         return new ImageIcon(resizedImage);
     }
 }
-
 
