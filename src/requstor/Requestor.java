@@ -14,32 +14,42 @@ import java.net.URL;
 
 public class Requestor {
     private UrlBuilder urlBuilder;
+    private boolean status;
 
     public Requestor(String domain) {
         urlBuilder = new UrlBuilder(domain);
+        status = setStatus();
+    }
+
+    public boolean getStatus() {
+        return this.status;
     }
 
     public String register(String diff, String name, int sec) {
+        if (!status) return null;
         String urlString = urlBuilder.register(diff, name, sec);
         return request(urlString);
     }
 
     public String get() {
+        if (!status) return null;
         String urlString = urlBuilder.get();
         return request(urlString);
     }
 
     public String get(String diff) {
+        if (!status) return null;
         String urlString = urlBuilder.get(diff);
         return request(urlString);
     }
 
     public String reset() {
+        if (!status) return null;
         String urlString = urlBuilder.reset();
         return request(urlString);
     }
 
-    public boolean getStatus() {
+    public boolean setStatus() {
         String urlString = urlBuilder.getBaseUrl();
         try {
             URL url = new URL(urlString);
@@ -47,7 +57,7 @@ public class Requestor {
 
             int responseCode = conn.getResponseCode();
 
-            System.out.println("responseCode: "+responseCode);
+            System.out.println("responseCode: " + responseCode);
             return true;
         } catch (MalformedURLException e) {
             e.printStackTrace();
@@ -58,7 +68,6 @@ public class Requestor {
     }
 
     private String request(String urlString) {
-
         try {
             URL url = new URL(urlString);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
@@ -78,7 +87,7 @@ public class Requestor {
             e.printStackTrace();
         }
 
-        return "false"; // 오류가 나면 "false"를 반환하니 response.equals("false")로 값 검증 후 사용할 것
+        return null;
     }
 
 

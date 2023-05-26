@@ -1,7 +1,6 @@
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import requstor.Requestor;
 
 import javax.swing.*;
@@ -9,16 +8,15 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.net.ConnectException;
 import java.util.Arrays;
 
-class LeaderboardFrame extends JFrame {
-    private Leaderboard leaderboard;
+public class LeaderboardDialog extends JDialog {
+    private Requestor requestor;
     private LeaderboardScene leaderboardScene;
 
-    public LeaderboardFrame(Leaderboard leaderboard) {
-        this.leaderboard = leaderboard;
-        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+    public LeaderboardDialog(JFrame frame, Requestor requestor) {
+        super(frame, "Leaderboard", true);
+        this.requestor=requestor;
         setSize(500, 400);
         setLocationRelativeTo(null);
     }
@@ -27,16 +25,14 @@ class LeaderboardFrame extends JFrame {
     // 강조 표시 없으면 강조표시 없는 패널
     // 두개로 분리하여 생성
     public void showLeaderboard() {
-        this.leaderboardScene = new LeaderboardScene(this, this.leaderboard);
+        this.leaderboardScene = new LeaderboardScene(this, this.requestor);
         setContentPane(leaderboardScene);
         setVisible(true);
     }
 
     public void closeLeaderboard() {
-        dispose();
+        setVisible(false);
     }
-
-
 }
 
 class LeaderboardScene extends JPanel {
@@ -49,12 +45,12 @@ class LeaderboardScene extends JPanel {
 
     private JLabel difficultyLabel; // 난이도 표시 레이블
 
-    private LeaderboardFrame frame;
-    private Leaderboard leaderboard;
+    private LeaderboardDialog frame;
+    private Requestor requestor;
 
-    public LeaderboardScene(LeaderboardFrame frame, Leaderboard leaderboard) {
+    public LeaderboardScene(LeaderboardDialog frame, Requestor requestor) {
         this.frame = frame;
-        this.leaderboard = leaderboard;
+        this.requestor=requestor;
 
         setLayout(new BorderLayout());
 
@@ -123,10 +119,10 @@ class LeaderboardScene extends JPanel {
     }
 
     private Object[][] getExampleRankingForDifficulty(String difficulty) {
-        Leaderboard leaderboard = LeaderboardScene.this.leaderboard;
+        Requestor requestor = LeaderboardScene.this.requestor;
 
         JSONParser jsonParser = new JSONParser();
-        String rankString = leaderboard.get(difficulty);
+        String rankString = requestor.get(difficulty);
 
         // 오류 발생시 임시값 리턴
         if (rankString == null) {

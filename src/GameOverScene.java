@@ -35,13 +35,13 @@ public class GameOverScene extends JPanel {
     public Main main; // Main 클래스의 인스턴스 변수
     public int time; // int 값의 변수
     private String difficulty;
-    private Leaderboard leaderboard;
+    private Requestor requestor;
 
     private static String DIFFICULTIES[] = {"easy", "normal", "hard"};
 
-    public GameOverScene(Main main, Leaderboard leaderboard, int difficulty, int time) {
+    public GameOverScene(Main main, Requestor requestor, int difficulty, int time) {
         this.main = main;
-        this.leaderboard=leaderboard;
+        this.requestor=requestor;
         this.time = time;
         this.difficulty = DIFFICULTIES[difficulty];
 
@@ -97,10 +97,10 @@ public class GameOverScene extends JPanel {
         nicknameField.setForeground(Color.WHITE);
         nicknameField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Leaderboard leaderboard = GameOverScene.this.leaderboard;
+                Requestor requestor= GameOverScene.this.requestor;
 
                 String nickname = nicknameField.getText();
-                leaderboard.register(GameOverScene.this.difficulty, nickname, GameOverScene.this.time);
+                requestor.register(GameOverScene.this.difficulty, nickname, GameOverScene.this.time);
 
 
                 // 순위표를 표시하는 새로운 창 열음
