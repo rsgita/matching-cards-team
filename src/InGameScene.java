@@ -25,8 +25,8 @@ public class InGameScene extends JPanel {
     private int totalMatches;
     private CardButton selectedCard;
     private boolean isChecking;
-    private long startTime;
-    private long endTime;
+    private int startTime;
+    private int endTime;
 
 
     private Main main;
@@ -150,7 +150,7 @@ public class InGameScene extends JPanel {
         gameTimer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                long elapsedTime = System.currentTimeMillis() - startTime;
+                int elapsedTime = System.currentTimeMillis();
                 int seconds = (int) (elapsedTime / 1000);
                 String time = String.format("%d", seconds);
                 timerLabel.setText(time);
@@ -160,7 +160,7 @@ public class InGameScene extends JPanel {
     }
 
 
-    private long stopTimer() {
+    private int stopTimer() {
         if (gameTimer != null && gameTimer.isRunning()) {
             gameTimer.stop();
         }
