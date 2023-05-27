@@ -69,7 +69,8 @@ public class GameOverScene extends JPanel {
 
         // 닉네임 입력 패널
         JPanel nicknamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        nicknamePanel.setOpaque(false);
+        nicknamePanel.setBackground(new Color(255, 251,240)); 
+        nicknamePanel.setOpaque(true);
 
         JLabel rankLabel = new JLabel("당신의 기록은 " + time + "초입니다.");
         rankLabel.setFont(new Font("Arial", Font.PLAIN, 36));
@@ -113,7 +114,6 @@ public class GameOverScene extends JPanel {
 
      // 중앙 패널을 backgroundPanel의 중앙에 추가
      backgroundPanel.add(centerPanel, BorderLayout.CENTER);
-
         JLabel nicknameLabel = new JLabel("Enter Nickname:");
         nicknameLabel.setFont(new Font("Arial", Font.PLAIN, 27));
         nicknameLabel.setForeground(Color.BLACK);
