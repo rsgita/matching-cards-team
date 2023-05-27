@@ -25,24 +25,20 @@ public class InGameScene extends JPanel {
     private int totalMatches;
     private CardButton selectedCard;
     private boolean isChecking;
-    private int startTime;
-    private int endTime;
-
+    private Timer timer;
+    private long startTime;
+    private long elapsedTime;
 
     private Main main;
     private int difficulty;
 
-    private Timer gameTimer;
-
-
     public InGameScene(Main main, int difficulty) {
-        this.main=main;
-        this.difficulty=difficulty;
+        this.main = main;
+        this.difficulty = difficulty;
 
         this.row = this.ROWS[difficulty];
         this.column = this.COLUMNS[difficulty];
         this.totalPairs = (this.row * this.column) / 2;
-
 
         List<Integer> selectedImages = selectRandomImages();
 
@@ -147,28 +143,23 @@ public class InGameScene extends JPanel {
     }
 
     private void startTimer(JLabel timerLabel) {
-        gameTimer = new Timer(1000, new ActionListener() {
+        timer = new Timer(1000, new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                int elapsedTime = System.currentTimeMillis();
+                elapsedTime = System.currentTimeMillis() - startTime;
                 int seconds = (int) (elapsedTime / 1000);
                 String time = String.format("%d", seconds);
                 timerLabel.setText(time);
             }
         });
-        gameTimer.start();
+        timer.start();
     }
 
-
-    private int stopTimer() {
-        if (gameTimer != null && gameTimer.isRunning()) {
-            gameTimer.stop();
+    public void stopTimer() {
+        if (timer != null && timer.isRunning()) {
+            timer.stop();
         }
-        endTime = System.currentTimeMillis();
-        return endTime;
     }
-
-
 
     private class CardButtonListener implements ActionListener {
         @Override
@@ -206,11 +197,9 @@ public class InGameScene extends JPanel {
                     if (totalMatches == totalPairs) {
                         // 모든 짝을 다 맞춤
                         stopTimer();
+                        int seconds = (int) (elapsedTime / 1000);
                         JOptionPane.showMessageDialog(null, "축하합니다!");
-//                        SwingUtilities.getWindowAncestor(InGameScene.this).dispose();
-//                        System.exit(0);
-                        // 게임오버 패널로 변경
-                        InGameScene.this.main.setGameOverScene(InGameScene.this.difficulty, 30);
+                        InGameScene.this.main.setGameOverScene(InGameScene.this.difficulty, seconds);
                     }
 
                     selectedCard = null;
@@ -291,4 +280,3 @@ class CardButton extends JButton {
         return new ImageIcon(resizedImage);
     }
 }
-
