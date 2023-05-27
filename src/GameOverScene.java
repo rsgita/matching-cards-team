@@ -48,7 +48,7 @@ public class GameOverScene extends JPanel {
         setLayout(new BorderLayout());
 
         // 배경 이미지 패널
-        backgroundPanel = new ImagePanel(new ImageIcon("image/gameover.jpg").getImage());
+        backgroundPanel = new ImagePanel(new ImageIcon("image/gamevoer (1).png").getImage());
         backgroundPanel.setLayout(new BorderLayout());
 
         add(backgroundPanel);
@@ -71,8 +71,8 @@ public class GameOverScene extends JPanel {
         JPanel nicknamePanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         nicknamePanel.setOpaque(false);
 
-        JLabel rankLabel = new JLabel("축하합니다! 당신의 기록은 " + time + "초입니다.");
-        rankLabel.setFont(new Font("Maplestory Bold", Font.PLAIN, 30));
+        JLabel rankLabel = new JLabel("당신의 기록은 " + time + "초입니다.");
+        rankLabel.setFont(new Font("Maplestory Bold", Font.PLAIN, 36));
         rankLabel.setForeground(Color.BLACK);
 
         // 이미지 하단 가운데에 위치하기 위한 추가 코드
@@ -84,7 +84,36 @@ public class GameOverScene extends JPanel {
 
         add(backgroundPanel);
 
-        // 닉네임 레이블
+        // 닉네임 레이블// 이미지 하단 가운데에 위치하기 위한 추가 코드
+        backgroundPanel.setLayout(new BorderLayout());
+
+     // 중앙 패널
+     JPanel centerPanel2 = new JPanel();
+     centerPanel.setOpaque(false);
+     centerPanel.setLayout(new GridBagLayout());
+
+     // 축하 메시지
+     JLabel congratulationsLabel = new JLabel("축하합니다!");
+     congratulationsLabel.setFont(new Font("Maplestory Bold", Font.PLAIN, 36));
+     congratulationsLabel.setForeground(Color.BLACK);
+
+  // 중앙 패널에 컴포넌트를 추가하고 위치 설정
+     GridBagConstraints gbc = new GridBagConstraints();
+     gbc.gridx = 0;
+     gbc.gridy = 0;
+     gbc.anchor = GridBagConstraints.PAGE_END; // 정중앙 아래로 정렬
+     gbc.insets = new Insets(300, 0, 0, 0); // 위쪽 여백 추가 (100px)
+
+     centerPanel.add(congratulationsLabel, gbc);
+
+     gbc.gridy = 1;
+     gbc.insets = new Insets(10, 0, 0, 0); // 위쪽 여백 추가 (10px)
+     centerPanel.add(rankLabel, gbc);
+
+
+     // 중앙 패널을 backgroundPanel의 중앙에 추가
+     backgroundPanel.add(centerPanel, BorderLayout.CENTER);
+
         JLabel nicknameLabel = new JLabel("Enter Nickname:");
         nicknameLabel.setFont(new Font("Maplestory Bold", Font.PLAIN, 27));
         nicknameLabel.setForeground(Color.BLACK);
@@ -93,8 +122,9 @@ public class GameOverScene extends JPanel {
         // 닉네임 입력 필드
         JTextField nicknameField = new JTextField(15);
         nicknameField.setFont(new Font("Maplestory Bold", Font.PLAIN, 24));
-        nicknameField.setBackground(Color.BLACK);
-        nicknameField.setForeground(Color.WHITE);
+        Color Fieldcolor = new Color(255, 251, 240);
+        nicknameField.setBackground(Fieldcolor);
+        nicknameField.setForeground(Color.BLACK);
         nicknameField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 Requestor requestor= GameOverScene.this.requestor;
